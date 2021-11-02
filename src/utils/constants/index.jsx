@@ -32,5 +32,6 @@ export default {
         notfound: "/notfound",
         internalservererror: "/internalservererror"
     },
-    networkErrorMessage: "Unable to reach server"
+    networkErrorMessage: "Server throw exception",
+    timeoutErrorMessage: "Unable to reach server, request timeout"
 };

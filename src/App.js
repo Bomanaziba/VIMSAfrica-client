@@ -11,6 +11,10 @@ import { useAuth } from './utils/store/authStore';
 import utils from './utils/store/state';
 import axiosConfig from './config/axios.config';
 import "./utils/styles/css/style.css";
+import "primereact/resources/themes/saga-blue/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+import "primeflex/primeflex.css";
 import "./utils/styles/css/style.css.map";
 
 const history = createBrowserHistory();
