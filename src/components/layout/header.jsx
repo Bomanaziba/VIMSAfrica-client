@@ -1,6 +1,7 @@
 
 import React from "react";
 import { propTypes } from "react-bootstrap/esm/Image";
+import constants from "../../utils/constants";
 
 const Header = (props) => {
 
@@ -127,7 +128,7 @@ const Header = (props) => {
                             </div>
                         </li>
                         <li className="icons">
-                            <a href="javascript:void(0)" className="log-user">
+                            <a href={constants.routes.logout} className="log-user">
                                 <img src="../../images/avatar/1.jpg" alt="" /> <span>{props.FullName}</span>  <i className="fa fa-caret-down f-s-14" aria-hidden="true"></i>
                             </a>
                             <div className="drop-down dropdown-profile animated bounceInDown">

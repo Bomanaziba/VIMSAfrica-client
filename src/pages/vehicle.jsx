@@ -4,6 +4,7 @@ import constants from "../utils/constants";
 import { useResource } from "react-resource-router";
 import ServerSideDatatable from "../components/tables/datatable";
 import { vehicle } from "../apis/vehicleapis";
+import utils from "../utils";
 import { Toast } from "primereact/toast";
 import { workshopResource } from "../utils/resources";
 
@@ -14,18 +15,26 @@ function Vehicle(props) {
     const [index, setIndex] = React.useState(1);
     const [size, setSize] = React.useState(10);
     const [searchParams, setSearchParams] = React.useState('');
+    const [loading, setLoading] = React.useState(true);
     const { data: workshop, error, refresh } = useResource(workshopResource);
 
     const title = constants.modules.vehicle;
 
     React.useEffect(async () => {
+
+        setLoading(false);
+
         try {
             const data = await vehicle({ index, size, searchParams });
             setTData(data);
+
+            setLoading(true);
         }
         catch (error) {
+
             console.log(error);
         }
+
     }, []);
 
 
@@ -52,7 +61,7 @@ function Vehicle(props) {
     </div>
 
     return (
-        <Layout Title={title} LoadPage={true} >
+        <Layout Title={title} LoadPage={loading} >
             <div className="row">
                 <div className="col-lg-12">
                     <div className="card transparent-card">
@@ -60,10 +69,10 @@ function Vehicle(props) {
                             <h4 className="card-title mt-2">{title}</h4>
                         </div>
                         <div className="col-3 pull-right"> <a href={constants.routes.addvehicle} className="btn btn-primary" >
-                                <span className="align-right"><i className="ti-plus"></i></span>
-                            </a>
+                            <span className="align-right"><i className="ti-plus"></i></span>
+                        </a>
                         </div>
-                            
+
                         <ServerSideDatatable
                             Title={title}
                             Data={tData.items}

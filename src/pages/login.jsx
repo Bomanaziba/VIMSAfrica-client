@@ -9,6 +9,7 @@ import { Link, Redirect, useRouter, useRouterActions } from "react-resource-rout
 import utils from "../utils/store/state";
 import { Button } from "primereact/button";
 import Preloader from "../components/layout/preloader";
+import { Toast } from "primereact/toast";
 
 const Login = () => {
 
@@ -16,7 +17,7 @@ const Login = () => {
     const { register, errors, handleSubmit, control } = useForm();
     const [{ isAuthenticated }, { onLoginSuccess }] = useAuth();
     const { push } = useRouterActions();
-    const [loading, setLoading] = React.useState(false);
+    const [loading, setLoading] = React.useState(true);
     const [toast, setToast] = React.useState(null);
 
     React.useEffect(() => {
@@ -26,9 +27,7 @@ const Login = () => {
 
     const onSubmit = async data => {
 
-        if (loading) return;
-
-        setLoading(true);
+        setLoading(false);
 
         const { username, password } = data;
 
@@ -36,24 +35,24 @@ const Login = () => {
 
         try {
             const {
-                id, firstName, lastName, role, email, token
+                id, firstName, lastName, role, email, accessToken
             } = await login({ username, password });
             // store user details in global state
             console.log("Successful login");
-            onLoginSuccess({ id, token, email, firstName, lastName, role });
+            onLoginSuccess({ id, accessToken, email, firstName, lastName, role });
             push(constants.routes.dashboard);
+            setLoading(true);
+            document.getElementsByTagName('html')[0].removeAttribute('id', 'login-page2');
         } catch (error) {
-            setLoading(false);
+            setLoading(true);
             if (error.response) {
                 const {
-                    data: { errors }
+                    data: { responseDescription }
                 } = error.response;
                 // display all errors as toast notification
-                errors.map(err =>
                     toast.show(
-                        utils.toastCallback({ severity: "error", summary: "Login Error", detail: err })
+                        utils.toastCallback({ severity: "error", summary: "Login Error", detail: responseDescription })
                     )
-                );
             } else {
                 // network errors
                 toast.show(
@@ -70,14 +69,19 @@ const Login = () => {
     if (isAuthenticated) {
         const path = sessionStorage.getItem("path") || constants.routes.dashboard;
         sessionStorage.removeItem("path");
+        document.getElementsByTagName('html')[0].removeAttribute('id', 'login-page2');
         return <Redirect to={path} />;
     }
+
+    
+    document.getElementsByTagName('html')[0].setAttribute('id', 'login-page2');//.setAttribute("id", "login-page2");
+    
 
     return (
 
         <div className="h-100">
 
-            <Preloader Loader = { true }/>
+            <Preloader Loader = { loading }/>
 
             <div className="login-bg2 h-100">
                 <div className="container-fluid h-100">
@@ -100,14 +104,14 @@ const Login = () => {
                                             </a>
                                         </div>
                                         <h4 className="text-center mt-4">Log into Your Account</h4>
-                                        <form className="mt-5 mb-5">
+                                        <form onSubmit={handleSubmit(onSubmit)} className="mt-5 mb-5">
                                             <div className="form-group">
                                                 <label>Email</label>
-                                                <input type="email" className="form-control" placeholder="Email" />
+                                                <input {...register('username')}  type="text" className="form-control" name="username" placeholder="Username" />
                                             </div>
                                             <div className="form-group">
                                                 <label>Password</label>
-                                                <input type="password" className="form-control" placeholder="Password" />
+                                                <input {...register('password')} type="password" className="form-control" name="password"  placeholder="Password" />
                                             </div>
                                             <div className="form-row">
                                                 <div className="form-group col-md-6">
@@ -120,7 +124,7 @@ const Login = () => {
                                                 </div>
                                             </div>
                                             <div className="text-center mb-4 mt-4">
-                                                <a href={constants.routes.dashboard} type="submit" className="btn btn-primary">Sign in</a>
+                                                <button href="#" type="submit" className="btn btn-primary">Sign in</button>
                                             </div>
                                         </form>
                                         <div className="text-center">
@@ -145,7 +149,7 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-
+            <Toast ref={el => setToast(el)} />
         </div>
 
     );

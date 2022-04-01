@@ -49,7 +49,7 @@ const ServerSideDatatable = (props) => {
     );
 
 
-    const footer = `In total there are ${size} ${props.Title}.`;
+    //const footer = `In total there are ${size} ${props.Title}.`;
 
 
     return (
@@ -64,7 +64,7 @@ const ServerSideDatatable = (props) => {
                 rows={size}
                 header={header}
                 rowsPerPageOptions={[10, 20, 50, 100]}
-                footer={footer}>
+                >
                 {column}
             </DataTable>
         </div>

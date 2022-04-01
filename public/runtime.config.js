@@ -1,5 +1,5 @@
 window["configs"] = {
-    baseURL: "http://localhost:5000/"
+    baseURL: "http://vimsafrica-001-site1.etempurl.com/"
 };
   
   

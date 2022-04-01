@@ -21,10 +21,12 @@ const Index = (props) => {
         <>
             <Preloader Loader = { props.LoadPage }/>
 
+            <HeaderNav />
+            <Header FullName = { firstName + " " + lastName } />
+            <LeftSideBar />
+
             <div id="main-wrapper" className={showPage}>
-                <HeaderNav />
-                <Header FullName = { firstName + " " + lastName } />
-                <LeftSideBar />
+                
                 <div className="content-body" >
                     <div className="container-fluid">
                         <BreadCrumb Title = { props.Title } />

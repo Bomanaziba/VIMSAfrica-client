@@ -15,7 +15,7 @@ export const routes = [
         path: constants.routes.home,
         name: "HOME",
         exact: true,
-        component: Home
+        component: Login
     },
     {
         path: constants.routes.login,
